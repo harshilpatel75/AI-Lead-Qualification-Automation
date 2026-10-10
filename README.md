@@ -354,6 +354,8 @@ Do not assume ingestion is complete until you have checked the execution results
 
 If your Simple Vector Store data has been lost after restarting n8n, run ingestion again before testing lead qualification.
 
+![AI Lead Qualification n8n Workflow](Project-Screenshots/Knowledge-Ingestion.png)
+
 ### 10. Run the Lead Qualification Workflow
 
 Provide a sample lead or use the supplied CSV as a reference for test cases.
