@@ -1,0 +1,6 @@
+
+name,business,service,budget,timeline,decision_maker,expected_classification
+Rahul Sharma,FitLife Gym,Website Development,60000,3 weeks,true,HOT
+Amit Patel,Amit Fashion Store,Website Development,35000,2 months,true,WARM
+Neha Shah,Neha Boutique,Website Development,30000,6 months,false,COLD
+Jay Shah,Jay Retail Store,Website Development,10000,6 months,false,UNQUALIFIED
