@@ -1,0 +1,276 @@
+WEBGROWTH SOLUTIONS — LEAD QUALIFICATION RULES
+
+PURPOSE
+
+These rules define how a lead should be evaluated.
+
+The qualification system should combine business rules, retrieved knowledge and AI reasoning.
+
+The AI must not invent qualification criteria that are not supported by the available business knowledge.
+
+
+QUALIFICATION FACTORS
+
+Each lead should be evaluated using five primary factors:
+
+1. Budget Compatibility — 30 points
+2. Requirement Fit — 25 points
+3. Timeline Compatibility — 20 points
+4. Business Fit — 15 points
+5. Intent Signals — 10 points
+
+Maximum score: 100 points.
+
+
+1. BUDGET COMPATIBILITY — 30 POINTS
+
+Evaluate the lead's stated budget against the approximate pricing of the requested service.
+
+30 points:
+Budget comfortably supports the expected project range.
+
+20–25 points:
+Budget is close to the expected range and the project may be viable with reasonable scope.
+
+10–15 points:
+Budget is below the expected range but the project may become viable if the scope is reduced.
+
+0–5 points:
+Budget is significantly below the expected starting price for the requested scope.
+
+If the lead has not provided a budget:
+Do not assume a budget.
+Mark budget information as missing and recommend asking for it.
+
+
+2. REQUIREMENT FIT — 25 POINTS
+
+Evaluate whether the requested functionality matches the services offered by WebGrowth Solutions.
+
+25 points:
+Requirements closely match an offered service and are technically reasonable.
+
+18–24 points:
+Requirements mostly match an offered service but contain some additional complexity.
+
+10–17 points:
+Only part of the requirement matches the available services.
+
+1–9 points:
+The requirement has very limited alignment with the available services.
+
+0 points:
+The requested work is unrelated to the company's services.
+
+If the requirements are unclear:
+Do not assume the missing requirements.
+Ask follow-up questions.
+
+
+3. TIMELINE COMPATIBILITY — 20 POINTS
+
+Evaluate whether the requested deadline is realistic.
+
+20 points:
+Timeline is realistic for the requested scope.
+
+13–18 points:
+Timeline is somewhat aggressive but potentially achievable depending on scope.
+
+5–12 points:
+Timeline appears difficult and requires clarification.
+
+0–4 points:
+Timeline is unrealistic for the requested scope.
+
+If no timeline is provided:
+Mark timeline as missing and recommend asking for the expected deadline.
+
+
+4. BUSINESS FIT — 15 POINTS
+
+Evaluate whether the lead's business and project align with the ideal customer profile.
+
+15 points:
+Strong alignment with the ideal customer profile.
+
+10–14 points:
+Generally suitable but requires additional assessment.
+
+5–9 points:
+Limited business fit.
+
+0–4 points:
+Poor alignment with the company's target customer profile.
+
+Business type alone must not determine the entire qualification.
+
+
+5. INTENT SIGNALS — 10 POINTS
+
+Evaluate how strongly the lead appears to be planning to proceed.
+
+10 points:
+Strong buying intent. The lead provides detailed requirements, budget, timeline and appears ready to discuss implementation.
+
+7–9 points:
+Good intent. The lead has a clear requirement and appears seriously interested.
+
+4–6 points:
+Moderate intent. The lead is exploring options but has some concrete requirements.
+
+1–3 points:
+Weak intent. The lead is only generally exploring or provides very limited information.
+
+0 points:
+No meaningful buying intent is demonstrated.
+
+
+FINAL LEAD CLASSIFICATION
+
+After calculating the total score:
+
+80–100:
+HOT
+
+60–79:
+WARM
+
+40–59:
+COLD
+
+0–39:
+UNQUALIFIED
+
+
+HOT LEADS
+
+Characteristics:
+- Strong requirement fit
+- Realistic budget
+- Realistic timeline
+- Good business fit
+- Strong buying intent
+
+Recommended action:
+Prioritize the lead for immediate human follow-up.
+
+
+WARM LEADS
+
+Characteristics:
+- Reasonable opportunity
+- Some qualification information is positive
+- One or more factors require clarification
+
+Recommended action:
+Follow up and collect missing information.
+
+
+COLD LEADS
+
+Characteristics:
+- Limited buying intent
+- Weak requirement fit
+- Budget concerns
+- Long or uncertain timeline
+- Significant missing information
+
+Recommended action:
+Collect more information and nurture the lead.
+
+
+UNQUALIFIED LEADS
+
+Characteristics:
+- Requirement is unrelated
+- Budget is severely incompatible
+- Timeline is impossible
+- Business fit is extremely poor
+- Request violates business policies
+
+Recommended action:
+Do not prioritize for sales follow-up. If appropriate, explain the reason professionally.
+
+
+MISSING INFORMATION RULE
+
+Missing information must not automatically result in a zero score.
+
+Instead, the system should identify which important information is missing.
+
+Common missing information:
+
+- Budget
+- Project requirements
+- Timeline
+- Business type
+- Number of pages/products/users
+- Required integrations
+- Target audience
+- Existing website
+- Decision-making authority
+
+
+CONFIDENCE
+
+The system should provide a confidence level:
+
+HIGH:
+Most important qualification information is available and the evidence is clear.
+
+MEDIUM:
+Some important information is missing or ambiguous.
+
+LOW:
+Multiple important details are missing or the lead's requirements are unclear.
+
+
+EVIDENCE REQUIREMENT
+
+Every important qualification decision should be supported by evidence from:
+
+- Lead information
+- Retrieved business knowledge
+- Explicit qualification rules
+
+The system should not invent facts about the lead or business.
+
+
+HUMAN REVIEW RULE
+
+Human review should be recommended when:
+
+- Requirements are highly complex
+- Budget and scope are difficult to compare
+- The lead requests a custom solution
+- The timeline appears unrealistic
+- The lead requests a special discount
+- The lead asks for guaranteed results
+- The system has low confidence
+- Important information is missing
+
+
+IMPORTANT AI BEHAVIOR
+
+The AI must distinguish between:
+
+FACT:
+Information explicitly provided by the lead or retrieved from business knowledge.
+
+INFERENCE:
+A reasonable interpretation based on available information.
+
+MISSING:
+Information that has not been provided.
+
+The AI must never present an inference as a confirmed fact.
+
+
+SCORE INTEGRITY
+
+The final score must be calculated using the defined scoring factors.
+
+The AI should not arbitrarily increase or decrease the score.
+
+If evidence is insufficient to assign a reliable score, the system should identify the uncertainty and recommend human review.
