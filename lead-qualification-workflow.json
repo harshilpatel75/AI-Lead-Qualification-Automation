@@ -1,0 +1,1490 @@
+{
+  "name": "DAY 6 - Final Lead Scoring",
+  "nodes": [
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        -848,
+        752
+      ],
+      "id": "28f574e3-3d2b-4192-bd7d-fbc750b3b037",
+      "name": "Google Gemini Chat Model",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "8EAMP7tAVX6nQFZV",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "retrieve-as-tool",
+        "toolDescription": "Search the WebGrowth Solutions company knowledge base.\n\nUse this tool whenever you need information about:\n- company information\n- services\n- pricing\n- ideal customers\n- lead qualification rules\n- FAQs\n- company policies\n\nAlways use this tool before making claims about company-specific information.",
+        "memoryKey": {
+          "__rl": true,
+          "mode": "list",
+          "value": "vector_store_key"
+        }
+      },
+      "type": "@n8n/n8n-nodes-langchain.vectorStoreInMemory",
+      "typeVersion": 1.3,
+      "position": [
+        -672,
+        752
+      ],
+      "id": "e59028c7-cdbd-45a9-b7b9-369b0b11525a",
+      "name": "company_knowledge"
+    },
+    {
+      "parameters": {
+        "model": "nomic-embed-text:latest"
+      },
+      "type": "@n8n/n8n-nodes-langchain.embeddingsOllama",
+      "typeVersion": 1,
+      "position": [
+        -672,
+        912
+      ],
+      "id": "b4fcdbd2-84ea-45c5-8990-2735440ccb4a",
+      "name": "Embeddings Ollama",
+      "credentials": {
+        "ollamaApi": {
+          "id": "h9VtyhRocEoSsG0r",
+          "name": "Ollama account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "299b4779-df91-4005-ad58-2d9f4e4ecc9d",
+              "name": "lead_name",
+              "value": "={{ $json.lead_name }}",
+              "type": "string"
+            },
+            {
+              "id": "15125e86-f256-44dc-89b4-c90adb60781d",
+              "name": "business",
+              "value": "={{ $json.business }}",
+              "type": "string"
+            },
+            {
+              "id": "9034d5a5-7359-403c-bf5c-148c9d224768",
+              "name": "service",
+              "value": "={{ $json.service }}",
+              "type": "string"
+            },
+            {
+              "id": "936f4059-e7b5-4518-acd5-67a3eac2c6f7",
+              "name": "budget",
+              "value": "={{ $json.budget }}",
+              "type": "number"
+            },
+            {
+              "id": "bbac9cab-ce42-44c8-ad8f-76027b5dd654",
+              "name": "budget_category",
+              "value": "={{ $json.budget_category }}",
+              "type": "string"
+            },
+            {
+              "id": "c3c84183-4faa-4b62-8cea-df2dff59d35a",
+              "name": "timeline",
+              "value": "={{ $json.timeline }}",
+              "type": "string"
+            },
+            {
+              "id": "adc4c39f-0190-4bd3-8d25-b9e2011af745",
+              "name": "timeline_category",
+              "value": "={{ $json.timeline_category }}",
+              "type": "string"
+            },
+            {
+              "id": "5f3aeb07-2450-48cf-a2c1-25cee437add8",
+              "name": "business_fit",
+              "value": "={{ $json.business_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "720bb2c1-2bd1-4558-80e3-2923fd9d489e",
+              "name": "service_fit",
+              "value": "={{ $json.service_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "0a2fb125-4e23-4ca6-ac45-1abd7682cfa8",
+              "name": "decision_maker",
+              "value": "={{ $json.decision_maker }}",
+              "type": "boolean"
+            },
+            {
+              "id": "3015ffa1-8b1e-4de8-8c89-4a18a324cc9d",
+              "name": "requirement_clarity",
+              "value": "={{ $json.requirement_clarity }}",
+              "type": "string"
+            },
+            {
+              "id": "bd0aa658-3af8-410b-9e2a-c1443d24059a",
+              "name": "positive_signals",
+              "value": "={{ $json.positive_signals }}",
+              "type": "array"
+            },
+            {
+              "id": "48fe77e1-2e15-4181-a5d3-45c177aa47ec",
+              "name": "negative_signals",
+              "value": "={{ $json.negative_signals }}",
+              "type": "string"
+            },
+            {
+              "id": "27c76103-52af-4e3c-a28f-0bb7c9d25058",
+              "name": "scoring",
+              "value": "={{ $json.scoring }}",
+              "type": "object"
+            },
+            {
+              "id": "95dc1726-0e2e-49be-a281-e02059432816",
+              "name": "lead_status",
+              "value": "Warm",
+              "type": "string"
+            },
+            {
+              "id": "c52798b9-c7ae-4f64-bdb8-13f2175c85d9",
+              "name": "priority",
+              "value": "Medium",
+              "type": "string"
+            },
+            {
+              "id": "ad2b5d89-dc15-4c2b-8b51-6db8df48a55c",
+              "name": "recommended_action",
+              "value": "Follow up with lead",
+              "type": "string"
+            },
+            {
+              "id": "04c36b2c-a66f-46cb-9750-56a8175e1889",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "d3063273-16df-49fd-8d4a-f5e0eb4a0090",
+              "name": "requirement",
+              "value": "={{ $json.requirement }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        96,
+        512
+      ],
+      "id": "d7eeb68d-5ad2-4eda-96d0-6daf8773c0fa",
+      "name": "WARM - Action"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "299b4779-df91-4005-ad58-2d9f4e4ecc9d",
+              "name": "lead_name",
+              "value": "={{ $json.lead_name }}",
+              "type": "string"
+            },
+            {
+              "id": "15125e86-f256-44dc-89b4-c90adb60781d",
+              "name": "business",
+              "value": "={{ $json.business }}",
+              "type": "string"
+            },
+            {
+              "id": "9034d5a5-7359-403c-bf5c-148c9d224768",
+              "name": "service",
+              "value": "={{ $json.service }}",
+              "type": "string"
+            },
+            {
+              "id": "936f4059-e7b5-4518-acd5-67a3eac2c6f7",
+              "name": "budget",
+              "value": "={{ $json.budget }}",
+              "type": "number"
+            },
+            {
+              "id": "bbac9cab-ce42-44c8-ad8f-76027b5dd654",
+              "name": "budget_category",
+              "value": "={{ $json.budget_category }}",
+              "type": "string"
+            },
+            {
+              "id": "c3c84183-4faa-4b62-8cea-df2dff59d35a",
+              "name": "timeline",
+              "value": "={{ $json.timeline }}",
+              "type": "string"
+            },
+            {
+              "id": "adc4c39f-0190-4bd3-8d25-b9e2011af745",
+              "name": "timeline_category",
+              "value": "={{ $json.timeline_category }}",
+              "type": "string"
+            },
+            {
+              "id": "5f3aeb07-2450-48cf-a2c1-25cee437add8",
+              "name": "business_fit",
+              "value": "={{ $json.business_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "720bb2c1-2bd1-4558-80e3-2923fd9d489e",
+              "name": "service_fit",
+              "value": "={{ $json.service_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "0a2fb125-4e23-4ca6-ac45-1abd7682cfa8",
+              "name": "decision_maker",
+              "value": "={{ $json.decision_maker }}",
+              "type": "boolean"
+            },
+            {
+              "id": "3015ffa1-8b1e-4de8-8c89-4a18a324cc9d",
+              "name": "requirement_clarity",
+              "value": "={{ $json.requirement_clarity }}",
+              "type": "string"
+            },
+            {
+              "id": "bd0aa658-3af8-410b-9e2a-c1443d24059a",
+              "name": "positive_signals",
+              "value": "={{ $json.positive_signals }}",
+              "type": "array"
+            },
+            {
+              "id": "48fe77e1-2e15-4181-a5d3-45c177aa47ec",
+              "name": "negative_signals",
+              "value": "={{ $json.negative_signals[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "27c76103-52af-4e3c-a28f-0bb7c9d25058",
+              "name": "scoring",
+              "value": "={{ $json.scoring }}",
+              "type": "object"
+            },
+            {
+              "id": "95dc1726-0e2e-49be-a281-e02059432816",
+              "name": "lead_status",
+              "value": "Unqualified",
+              "type": "string"
+            },
+            {
+              "id": "c52798b9-c7ae-4f64-bdb8-13f2175c85d9",
+              "name": "priority",
+              "value": "Low",
+              "type": "string"
+            },
+            {
+              "id": "ad2b5d89-dc15-4c2b-8b51-6db8df48a55c",
+              "name": "recommended_action",
+              "value": "Do not prioritize",
+              "type": "string"
+            },
+            {
+              "id": "81ea89f1-a121-4f66-90a1-8cd75083f6d8",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "fdf9ea13-b3f9-4d07-b924-9aadbe63ce05",
+              "name": "requirement",
+              "value": "={{ $json.requirement }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        112,
+        864
+      ],
+      "id": "c8b6adcd-c83d-454a-8a3e-cd7372df542a",
+      "name": "Unqualified - Action"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "299b4779-df91-4005-ad58-2d9f4e4ecc9d",
+              "name": "lead_name",
+              "value": "={{ $json.lead_name }}",
+              "type": "string"
+            },
+            {
+              "id": "15125e86-f256-44dc-89b4-c90adb60781d",
+              "name": "business",
+              "value": "={{ $json.business }}",
+              "type": "string"
+            },
+            {
+              "id": "9034d5a5-7359-403c-bf5c-148c9d224768",
+              "name": "service",
+              "value": "={{ $json.service }}",
+              "type": "string"
+            },
+            {
+              "id": "936f4059-e7b5-4518-acd5-67a3eac2c6f7",
+              "name": "budget",
+              "value": "={{ $json.budget }}",
+              "type": "number"
+            },
+            {
+              "id": "bbac9cab-ce42-44c8-ad8f-76027b5dd654",
+              "name": "budget_category",
+              "value": "={{ $json.budget_category }}",
+              "type": "string"
+            },
+            {
+              "id": "c3c84183-4faa-4b62-8cea-df2dff59d35a",
+              "name": "timeline",
+              "value": "={{ $json.timeline }}",
+              "type": "string"
+            },
+            {
+              "id": "adc4c39f-0190-4bd3-8d25-b9e2011af745",
+              "name": "timeline_category",
+              "value": "={{ $json.timeline_category }}",
+              "type": "string"
+            },
+            {
+              "id": "5f3aeb07-2450-48cf-a2c1-25cee437add8",
+              "name": "business_fit",
+              "value": "={{ $json.business_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "720bb2c1-2bd1-4558-80e3-2923fd9d489e",
+              "name": "service_fit",
+              "value": "={{ $json.service_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "0a2fb125-4e23-4ca6-ac45-1abd7682cfa8",
+              "name": "decision_maker",
+              "value": "={{ $json.decision_maker }}",
+              "type": "boolean"
+            },
+            {
+              "id": "3015ffa1-8b1e-4de8-8c89-4a18a324cc9d",
+              "name": "requirement_clarity",
+              "value": "={{ $json.requirement_clarity }}",
+              "type": "string"
+            },
+            {
+              "id": "bd0aa658-3af8-410b-9e2a-c1443d24059a",
+              "name": "positive_signals",
+              "value": "={{ $json.positive_signals }}",
+              "type": "array"
+            },
+            {
+              "id": "48fe77e1-2e15-4181-a5d3-45c177aa47ec",
+              "name": "negative_signals",
+              "value": "={{ $json.negative_signals[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "27c76103-52af-4e3c-a28f-0bb7c9d25058",
+              "name": "scoring",
+              "value": "={{ $json.scoring }}",
+              "type": "object"
+            },
+            {
+              "id": "95dc1726-0e2e-49be-a281-e02059432816",
+              "name": "lead_status",
+              "value": "Hot",
+              "type": "string"
+            },
+            {
+              "id": "c52798b9-c7ae-4f64-bdb8-13f2175c85d9",
+              "name": "priority",
+              "value": "High",
+              "type": "string"
+            },
+            {
+              "id": "ad2b5d89-dc15-4c2b-8b51-6db8df48a55c",
+              "name": "recommended_action",
+              "value": "Contact immediately",
+              "type": "string"
+            },
+            {
+              "id": "161b6c91-75bf-46d7-939d-69e14de376ac",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "37d40e22-4f1b-46ee-9047-f73086760edd",
+              "name": "requirement",
+              "value": "={{ $json.requirement }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        96,
+        352
+      ],
+      "id": "50ab279b-cf67-40e8-9326-3653042c0f6a",
+      "name": "HOT - Action"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "299b4779-df91-4005-ad58-2d9f4e4ecc9d",
+              "name": "lead_name",
+              "value": "={{ $json.lead_name }}",
+              "type": "string"
+            },
+            {
+              "id": "15125e86-f256-44dc-89b4-c90adb60781d",
+              "name": "business",
+              "value": "={{ $json.business }}",
+              "type": "string"
+            },
+            {
+              "id": "9034d5a5-7359-403c-bf5c-148c9d224768",
+              "name": "service",
+              "value": "={{ $json.service }}",
+              "type": "string"
+            },
+            {
+              "id": "936f4059-e7b5-4518-acd5-67a3eac2c6f7",
+              "name": "budget",
+              "value": "={{ $json.budget }}",
+              "type": "number"
+            },
+            {
+              "id": "bbac9cab-ce42-44c8-ad8f-76027b5dd654",
+              "name": "budget_category",
+              "value": "={{ $json.budget_category }}",
+              "type": "string"
+            },
+            {
+              "id": "c3c84183-4faa-4b62-8cea-df2dff59d35a",
+              "name": "timeline",
+              "value": "={{ $json.timeline }}",
+              "type": "string"
+            },
+            {
+              "id": "adc4c39f-0190-4bd3-8d25-b9e2011af745",
+              "name": "timeline_category",
+              "value": "={{ $json.timeline_category }}",
+              "type": "string"
+            },
+            {
+              "id": "5f3aeb07-2450-48cf-a2c1-25cee437add8",
+              "name": "business_fit",
+              "value": "={{ $json.business_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "720bb2c1-2bd1-4558-80e3-2923fd9d489e",
+              "name": "service_fit",
+              "value": "={{ $json.service_fit }}",
+              "type": "boolean"
+            },
+            {
+              "id": "0a2fb125-4e23-4ca6-ac45-1abd7682cfa8",
+              "name": "decision_maker",
+              "value": "={{ $json.decision_maker }}",
+              "type": "boolean"
+            },
+            {
+              "id": "3015ffa1-8b1e-4de8-8c89-4a18a324cc9d",
+              "name": "requirement_clarity",
+              "value": "={{ $json.requirement_clarity }}",
+              "type": "string"
+            },
+            {
+              "id": "bd0aa658-3af8-410b-9e2a-c1443d24059a",
+              "name": "positive_signals",
+              "value": "={{ $json.positive_signals }}",
+              "type": "array"
+            },
+            {
+              "id": "48fe77e1-2e15-4181-a5d3-45c177aa47ec",
+              "name": "negative_signals",
+              "value": "={{ $json.negative_signals[0] }}",
+              "type": "string"
+            },
+            {
+              "id": "27c76103-52af-4e3c-a28f-0bb7c9d25058",
+              "name": "scoring",
+              "value": "={{ $json.scoring }}",
+              "type": "object"
+            },
+            {
+              "id": "95dc1726-0e2e-49be-a281-e02059432816",
+              "name": "lead_status",
+              "value": "Cold",
+              "type": "string"
+            },
+            {
+              "id": "c52798b9-c7ae-4f64-bdb8-13f2175c85d9",
+              "name": "priority",
+              "value": "Low",
+              "type": "string"
+            },
+            {
+              "id": "ad2b5d89-dc15-4c2b-8b51-6db8df48a55c",
+              "name": "recommended_action",
+              "value": "Keep lead for future follow-up",
+              "type": "string"
+            },
+            {
+              "id": "65800b33-60fc-463d-8181-3a4bf26b129b",
+              "name": "email",
+              "value": "={{ $json.email }}",
+              "type": "string"
+            },
+            {
+              "id": "58cf2f48-f4e2-4183-bdc9-c8d3c6b3506b",
+              "name": "requirement",
+              "value": "={{ $json.requirement }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        112,
+        688
+      ],
+      "id": "578e644b-a1c2-4cb3-bf3c-555d8796dde8",
+      "name": "COLD - Action"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are a professional sales follow-up message generator for WebGrowth Solutions.\n\nGenerate a short, personalized follow-up message for the lead.\n\nUse ONLY the information provided in the input.\nDo not invent services, prices, deadlines, features, or promises.\n\nThe message should:\n- Address the lead by name.\n- Mention their business.\n- Mention the service they are interested in.\n- Briefly acknowledge their requirement.\n- Match the lead's qualification level.\n- Have a professional but friendly tone.\n- End with a simple call to action.\n- Be suitable for WhatsApp or email.\n- Do not mention the internal score or classification.\n\nLead information:\n\nName: {{ $json.lead_name }}\nBusiness:{{ $json.business }}\nService: {{ $json.service }}\nRequirement: {{ $json.requirement }}\nBudget: {{ $json.budget }}\nTimeline: {{ $json.timeline }}\nClassification: {{ $json.classification }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        720,
+        624
+      ],
+      "id": "add2e208-8aa6-4601-a8f4-983e7bd443dd",
+      "name": "AI Agent1"
+    },
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lead-scoring",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2.1,
+      "position": [
+        -1072,
+        528
+      ],
+      "id": "238b11d0-6f28-4861-bf8f-5ace34bde915",
+      "name": "Lead Input Data",
+      "webhookId": "d703e2e8-7980-4b8d-b654-5ebc05bc9016"
+    },
+    {
+      "parameters": {},
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        1072,
+        544
+      ],
+      "id": "4794b759-743f-4a41-af6b-bea1abc8ce00",
+      "name": "Lead Data + Response to Lead"
+    },
+    {
+      "parameters": {
+        "assignments": {
+          "assignments": [
+            {
+              "id": "daec3104-701d-4661-b97e-02f5d978d87e",
+              "name": "name",
+              "value": "={{ $json.body.lead_name }}",
+              "type": "string"
+            },
+            {
+              "id": "e1504278-9f3d-4c1e-b615-0397c9d1cc42",
+              "name": "business",
+              "value": "={{ $json.body.business }}",
+              "type": "string"
+            },
+            {
+              "id": "0bc5190c-5bdd-4c38-a9d9-65b8d719607c",
+              "name": "requirement",
+              "value": "={{ $json.body.requirement }}",
+              "type": "string"
+            },
+            {
+              "id": "6c0e966f-8f1b-476b-b753-bfd45a65336b",
+              "name": "budget",
+              "value": "={{ $json.body.budget }}",
+              "type": "number"
+            },
+            {
+              "id": "2a263555-c013-4a89-906f-319c910587ea",
+              "name": "timeline",
+              "value": "={{ $json.body.timeline }}",
+              "type": "string"
+            },
+            {
+              "id": "c59d3027-f7b9-4e49-acfd-1b7f4c914c27",
+              "name": "decision_maker",
+              "value": "={{ $json.body.decision_maker }}",
+              "type": "boolean"
+            },
+            {
+              "id": "60d46020-3cad-4c89-a358-ebeb065a28d5",
+              "name": "email",
+              "value": "={{ $json.body.email }}",
+              "type": "string"
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 3.5,
+      "position": [
+        -848,
+        528
+      ],
+      "id": "7da5798f-963c-42b5-a898-b8edb4cefe77",
+      "name": "Lead Basic Data"
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=You are an AI lead analysis assistant for WebGrowth Solutions.\n\nYour job is to analyze incoming business leads using the lead information and the WebGrowth Solutions company knowledge base.\n\nIMPORTANT:\n\nFor company-specific information, ALWAYS use the `company_knowledge` tool before making a decision.\n\nDo not use general knowledge when company-specific information is available in the knowledge base.\n\nDo not invent information.\n\nIf required information is not available in either the lead data or the company knowledge base, treat it as missing.\n\nYour job is ONLY to extract and classify lead information.\n\nDo NOT calculate a final numerical lead score.\n\nDo NOT assign a final lead classification such as HOT, WARM, COLD, or UNQUALIFIED.\n\nThe final score and classification will be calculated later using deterministic rules.\n\n\n### FIELD RULES\n\nlead_name:\n\nReturn only the lead person's name.\n\nDo not include their job title, role, or explanation.\n\n\nbusiness:\n\nReturn the business/company name.\n\n\nservice:\n\nIdentify the WebGrowth Solutions service that best matches the lead's requirement.\n\nUse the company knowledge base to determine the available service.\n\n\nbudget:\n\nReturn only the numerical budget amount.\n\nDo not include currency symbols or commas.\n\n\nbudget_category:\n\nUse ONLY one of these exact values:\n\n\"Low\"\n\"Medium\"\n\"Qualified\"\n\"High-value\"\n\nUse the company qualification rules:\n\n* Less than ₹25,000 → \"Low\"\n* ₹25,000 to ₹50,000 → \"Medium\"\n* ₹50,000 to ₹1,00,000 → \"Qualified\"\n* More than ₹1,00,000 → \"High-value\"\n\nDo not create alternative category names.\n\n\ntimeline:\n\nReturn the timeline provided by the lead.\n\n\ntimeline_category:\n\nUse ONLY one of these exact values:\n\n\"Urgent\"\n\"Good\"\n\"Long-term\"\n\nUse the company qualification rules:\n\n* Less than 2 weeks → \"Urgent\"\n* 2 weeks to 1 month → \"Good\"\n* 1 to 3 months → \"Good\"\n* More than 3 months → \"Long-term\"\n\nDo not create alternative category names.\n\n\nbusiness_fit:\n\nReturn true if the business matches the company's ideal customer profile.\n\nReturn false if it does not.\n\nBase this on the company knowledge base.\n\n\nservice_fit:\n\nReturn true if the requested service is offered by WebGrowth Solutions.\n\nReturn false if it is not.\n\nBase this on the company knowledge base.\n\n\ndecision_maker:\n\nReturn the decision-maker status provided by the lead.\n\nDo not infer that someone is a decision-maker unless the lead data or company knowledge clearly supports it.\n\n\nrequirement_clarity:\n\nReturn ONLY one of these exact values:\n\n\"High\"\n\"Medium\"\n\"Low\"\n\"Unknown\"\n\nUse these definitions:\n\n\"High\":\nThe lead has a clear business requirement and provides specific details about what they need.\n\n\"Medium\":\nThe lead has a general requirement but important details are missing.\n\n\"Low\":\nThe requirement is vague or poorly defined.\n\n\"Unknown\":\nThere is not enough information to determine requirement clarity.\n\n\npositive_signals:\n\nReturn an ARRAY containing the actual positive qualification signals supported by the lead data and company knowledge base.\n\nPossible signals include:\n\n\"Clear business requirement\"\n\"Defined requirements\"\n\"Suitable budget\"\n\"Realistic timeline\"\n\"Decision-maker involved\"\n\"Service matches company offering\"\n\"Business matches ideal customer profile\"\n\nDo NOT return a number.\n\nDo not invent signals.\n\nIf there are no supported positive signals, return [].\n\n\nnegative_signals:\n\nReturn an ARRAY containing the actual negative qualification signals supported by the lead data and company knowledge base.\n\nPossible signals include:\n\n\"No defined requirement\"\n\"Very low budget\"\n\"Requirement outside company services\"\n\"No realistic timeline\"\n\nDo NOT return a number.\n\nDo not invent signals.\n\nIf there are no supported negative signals, return [].\n\n\n### IMPORTANT DISTINCTION\n\nSeparate lead facts from company knowledge.\n\nLead facts come from:\n\nname\nbusiness\nrequirement\nbudget\ntimeline\ndecision_maker\n\nCompany-specific information must come from the `company_knowledge` tool.\n\n\n### OUTPUT\n\nReturn ONLY the structured data required by the Structured Output Parser.\n\nDo not return:\n\n* Markdown\n* Headings\n* Explanations\n* Bullet points\n* Analysis paragraphs\n* Additional fields\n* Final lead score\n* HOT/WARM/COLD/UNQUALIFIED classification\n\n\nFollowing is the lead data:\n\nname: {{ $json.name }}\n\nemail : {{ $json.email }}\n\nbusiness: {{ $json.business }}\n\nrequirement: {{ $json.requirement }}\n\nbudget: {{ $json.budget }}\n\ntimeline: {{ $json.timeline }}\n\ndecision_maker: {{ $json.decision_maker }}",
+        "hasOutputParser": true,
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        -656,
+        528
+      ],
+      "id": "38e19827-7ca5-49ea-8426-6052d672a73b",
+      "name": "AI Lead Extractor"
+    },
+    {
+      "parameters": {
+        "schemaType": "manual",
+        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"lead_name\": {\n      \"type\": \"string\"\n    },\n    \"email\":{\n      \"type\":\"string\"\n    },\n    \"business\": {\n      \"type\": \"string\"\n    },\n    \"service\": {\n      \"type\": \"string\"\n    },\n    \"requirement\":{\n      \"type\":\"string\"\n    },\n    \"budget\": {\n      \"type\": \"number\"\n    },\n    \"budget_category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Low\",\n        \"Medium\",\n        \"Qualified\",\n        \"High-value\"\n      ]\n    },\n    \"timeline\": {\n      \"type\": \"string\"\n    },\n    \"timeline_category\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"Urgent\",\n        \"Good\",\n        \"Long-term\"\n      ]\n    },\n    \"business_fit\": {\n      \"type\": \"boolean\"\n    },\n    \"service_fit\": {\n      \"type\": \"boolean\"\n    },\n    \"decision_maker\": {\n      \"type\": \"boolean\"\n    },\n    \"requirement_clarity\": {\n      \"type\": \"string\",\n      \"enum\": [\n        \"High\",\n        \"Medium\",\n        \"Low\",\n        \"Unknown\"\n      ]\n    },\n    \"positive_signals\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    },\n    \"negative_signals\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  },\n  \"required\": [\n    \"lead_name\",\n    \"email\",\n    \"business\",\n    \"service\",\n    \"requirement\",\n    \"budget\",\n    \"budget_category\",\n    \"timeline\",\n    \"timeline_category\",\n    \"business_fit\",\n    \"service_fit\",\n    \"decision_maker\",\n    \"requirement_clarity\",\n    \"positive_signals\",\n    \"negative_signals\"\n  ],\n  \"additionalProperties\": false\n}"
+      },
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        -384,
+        752
+      ],
+      "id": "8b331b5d-31aa-41b7-9d9a-5554ef5c8f4d",
+      "name": "Validate Lead Data"
+    },
+    {
+      "parameters": {
+        "jsCode": "const results = [];\n\nfor (const item of $input.all()) {\n\n  // Structured Output Parser puts lead data inside \"output\"\n  const lead = item.json.output;\n\n  let budgetScore = 0;\n  let clarityScore = 0;\n  let timelineScore = 0;\n  let businessFitScore = 0;\n  let serviceFitScore = 0;\n  let decisionMakerScore = 0;\n\n\n  // =========================\n  // BUDGET SCORE - 30 POINTS\n  // =========================\n\n  switch (lead.budget_category) {\n\n    case \"High-value\":\n      budgetScore = 30;\n      break;\n\n    case \"Qualified\":\n      budgetScore = 25;\n      break;\n\n    case \"Medium\":\n      budgetScore = 15;\n      break;\n\n    case \"Low\":\n      budgetScore = 5;\n      break;\n\n    default:\n      budgetScore = 0;\n  }\n\n\n  // ================================\n  // REQUIREMENT CLARITY - 25 POINTS\n  // ================================\n\n  switch (lead.requirement_clarity) {\n\n    case \"High\":\n      clarityScore = 25;\n      break;\n\n    case \"Medium\":\n      clarityScore = 15;\n      break;\n\n    case \"Low\":\n      clarityScore = 5;\n      break;\n\n    case \"Unknown\":\n      clarityScore = 0;\n      break;\n\n    default:\n      clarityScore = 0;\n  }\n\n\n  // =========================\n  // TIMELINE SCORE - 20 POINTS\n  // =========================\n\n  switch (lead.timeline_category) {\n\n    case \"Good\":\n      timelineScore = 20;\n      break;\n\n    case \"Urgent\":\n      timelineScore = 15;\n      break;\n\n    case \"Long-term\":\n      timelineScore = 5;\n      break;\n\n    default:\n      timelineScore = 0;\n  }\n\n\n  // =========================\n  // BUSINESS FIT - 10 POINTS\n  // =========================\n\n  if (lead.business_fit === true) {\n    businessFitScore = 10;\n  }\n\n\n  // =========================\n  // SERVICE FIT - 10 POINTS\n  // =========================\n\n  if (lead.service_fit === true) {\n    serviceFitScore = 10;\n  }\n\n\n  // =========================\n  // DECISION MAKER - 5 POINTS\n  // =========================\n\n  if (lead.decision_maker === true) {\n    decisionMakerScore = 5;\n  }\n\n\n  // =========================\n  // TOTAL SCORE\n  // =========================\n\n  const totalScore =\n    budgetScore +\n    clarityScore +\n    timelineScore +\n    businessFitScore +\n    serviceFitScore +\n    decisionMakerScore;\n\n\n  // =========================\n  // CLASSIFICATION\n  // =========================\n\n  let classification;\n\n\n  // -----------------------------------------\n  // RULE 1: CLEARLY UNQUALIFIED LEADS\n  // -----------------------------------------\n\n  if (\n    lead.business_fit === false ||\n    lead.service_fit === false ||\n    lead.budget_category === \"Low\"\n  ) {\n\n    classification = \"UNQUALIFIED\";\n\n  }\n\n\n  // -----------------------------------------\n  // RULE 2: HOT LEAD\n  // -----------------------------------------\n  // HOT requires:\n  // - Very strong score\n  // - Qualified or High-value budget\n  // -----------------------------------------\n\n  else if (\n    totalScore >= 85 &&\n    (\n      lead.budget_category === \"Qualified\" ||\n      lead.budget_category === \"High-value\"\n    )\n  ) {\n\n    classification = \"HOT\";\n\n  }\n\n\n  // -----------------------------------------\n  // RULE 3: WARM LEAD\n  // -----------------------------------------\n\n  else if (totalScore >= 65) {\n\n    classification = \"WARM\";\n\n  }\n\n\n  // -----------------------------------------\n  // RULE 4: COLD LEAD\n  // -----------------------------------------\n\n  else if (totalScore >= 40) {\n\n    classification = \"COLD\";\n\n  }\n\n\n  // -----------------------------------------\n  // RULE 5: UNQUALIFIED\n  // -----------------------------------------\n\n  else {\n\n    classification = \"UNQUALIFIED\";\n\n  }\n\n\n  // =========================\n  // FINAL OUTPUT\n  // =========================\n\n  results.push({\n\n    json: {\n\n      ...lead,\n\n      scoring: {\n\n        budget_score: budgetScore,\n\n        requirement_clarity_score: clarityScore,\n\n        timeline_score: timelineScore,\n\n        business_fit_score: businessFitScore,\n\n        service_fit_score: serviceFitScore,\n\n        decision_maker_score: decisionMakerScore,\n\n        total_score: totalScore,\n\n        classification: classification\n\n      }\n\n    }\n\n  });\n\n}\n\nreturn results;"
+      },
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        -336,
+        528
+      ],
+      "id": "a40b40fd-87c3-4a35-8600-984478210904",
+      "name": "Calculate Lead Score"
+    },
+    {
+      "parameters": {
+        "rules": {
+          "values": [
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.scoring.classification }}",
+                    "rightValue": "HOT",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    },
+                    "id": "7910902b-906f-4bde-818e-204de83e57e5"
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "d8f1128a-737c-4007-9ad3-df502c88b49d",
+                    "leftValue": "={{ $json.scoring.classification }}",
+                    "rightValue": "WARM",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "9b3b6b5c-2488-45b2-837c-b87f4467f93f",
+                    "leftValue": "={{ $json.scoring.classification }}",
+                    "rightValue": "COLD",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": "",
+                  "typeValidation": "strict",
+                  "version": 3
+                },
+                "conditions": [
+                  {
+                    "id": "59b48713-9107-4a89-ab6b-fcabe267ad61",
+                    "leftValue": "={{ $json.scoring.classification }}",
+                    "rightValue": "UNQUALIFIED",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ],
+                "combinator": "and"
+              }
+            }
+          ]
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.switch",
+      "typeVersion": 3.4,
+      "position": [
+        -144,
+        496
+      ],
+      "id": "49eca044-f6cf-48d1-9cfe-9a5a16fb39c5",
+      "name": "Classify Lead"
+    },
+    {
+      "parameters": {
+        "numberInputs": 4
+      },
+      "type": "n8n-nodes-base.merge",
+      "typeVersion": 3.2,
+      "position": [
+        368,
+        496
+      ],
+      "id": "0276e7cf-2c6c-4d56-9852-786f88d60208",
+      "name": "Merge Qualified Lead"
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "=1pos4qeDPtqPR9SHFhyuTCh06HRYjkH0eRGwz_Mrf1F4",
+          "mode": "id"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "gid=0",
+          "mode": "list",
+          "cachedResultName": "Lead_Info",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pos4qeDPtqPR9SHFhyuTCh06HRYjkH0eRGwz_Mrf1F4/edit#gid=0"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "lead_name": "={{ $json.lead_name }}",
+            "business": "={{ $json.business }}",
+            "service": "={{ $json.service }}",
+            "budget": "={{ $json.budget }}",
+            "budget_category": "={{ $json.budget_category }}",
+            "timeline": "={{ $json.timeline }}",
+            "timeline_category": "={{ $json.timeline_category }}",
+            "business_fit": "={{ $json.business_fit }}",
+            "service_fit": "={{ $json.service_fit }}",
+            "decision_maker": "={{ $json.decision_maker }}",
+            "requirement_clarity": "={{ $json.requirement_clarity }}",
+            "positive_signals": "={{ $json.positive_signals }}",
+            "negative_signals": "={{ $json.negative_signals }}",
+            "budget_score": "={{ $json.scoring.budget_score }}",
+            "requirement_score": "={{ $json.scoring.requirement_clarity_score }}",
+            "timeline_score": "={{ $json.scoring.timeline_score }}",
+            "business_fit_score": "={{ $json.scoring.business_fit_score }}",
+            "service_fit_score": "={{ $json.scoring.service_fit_score }}",
+            "desicion_maker_score": "={{ $json.scoring.decision_maker_score }}",
+            "total_score": "={{ $json.scoring.total_score }}",
+            "classification": "={{ $json.scoring.classification }}",
+            "recommended_action": "={{ $json.recommended_action }}",
+            "email": "={{ $json.email }}",
+            "requirement": "={{ $json.recommended_action }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "lead_name",
+              "displayName": "lead_name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "business",
+              "displayName": "business",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "service",
+              "displayName": "service",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget",
+              "displayName": "budget",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget_category",
+              "displayName": "budget_category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timeline",
+              "displayName": "timeline",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timeline_category",
+              "displayName": "timeline_category",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "business_fit",
+              "displayName": "business_fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "service_fit",
+              "displayName": "service_fit",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "decision_maker",
+              "displayName": "decision_maker",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "requirement_clarity",
+              "displayName": "requirement_clarity",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "positive_signals",
+              "displayName": "positive_signals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "negative_signals",
+              "displayName": "negative_signals",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "budget_score",
+              "displayName": "budget_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "requirement_score",
+              "displayName": "requirement_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "timeline_score",
+              "displayName": "timeline_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "business_fit_score",
+              "displayName": "business_fit_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "service_fit_score",
+              "displayName": "service_fit_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "desicion_maker_score",
+              "displayName": "desicion_maker_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "total_score",
+              "displayName": "total_score",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "classification",
+              "displayName": "classification",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "recommended_action",
+              "displayName": "recommended_action",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "email",
+              "displayName": "email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "requirement",
+              "displayName": "requirement",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        544,
+        528
+      ],
+      "id": "79e6c6f9-9929-41af-bcdc-a747f3050d31",
+      "name": "Save Lead to Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MW4w3cLmNPo1y8hC",
+          "name": "Google Sheets account 7"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.5-flash-lite",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        768,
+        864
+      ],
+      "id": "b625d36c-ba22-44ab-8add-a7478e89af5c",
+      "name": "Generate follow up message",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "8EAMP7tAVX6nQFZV",
+          "name": "Google Gemini(PaLM) Api account 2"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1pos4qeDPtqPR9SHFhyuTCh06HRYjkH0eRGwz_Mrf1F4",
+          "mode": "list",
+          "cachedResultName": "N8N_Sheet",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pos4qeDPtqPR9SHFhyuTCh06HRYjkH0eRGwz_Mrf1F4/edit?usp=drivesdk"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 357314843,
+          "mode": "list",
+          "cachedResultName": "Lead_Respond",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1pos4qeDPtqPR9SHFhyuTCh06HRYjkH0eRGwz_Mrf1F4/edit#gid=357314843"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "Name": "={{ $json.lead_name }}",
+            "Email": "={{ $json.email }}",
+            "Business": "={{ $json.business }}",
+            "Classification": "={{ $json.classification }}",
+            "Message": "={{ $json.output }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "Name",
+              "displayName": "Name",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Email",
+              "displayName": "Email",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Business",
+              "displayName": "Business",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Classification",
+              "displayName": "Classification",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "Message",
+              "displayName": "Message",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": false
+        },
+        "options": {}
+      },
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1280,
+        544
+      ],
+      "id": "b6a8cc05-8b84-4b93-808f-268b5898d5a5",
+      "name": "Save Follow-Up in Sheets",
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "MW4w3cLmNPo1y8hC",
+          "name": "Google Sheets account 7"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Lead Extractor",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "company_knowledge": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Lead Extractor",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Embeddings Ollama": {
+      "ai_embedding": [
+        [
+          {
+            "node": "company_knowledge",
+            "type": "ai_embedding",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "WARM - Action": {
+      "main": [
+        [
+          {
+            "node": "Merge Qualified Lead",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Unqualified - Action": {
+      "main": [
+        [
+          {
+            "node": "Merge Qualified Lead",
+            "type": "main",
+            "index": 3
+          }
+        ]
+      ]
+    },
+    "HOT - Action": {
+      "main": [
+        [
+          {
+            "node": "Merge Qualified Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "COLD - Action": {
+      "main": [
+        [
+          {
+            "node": "Merge Qualified Lead",
+            "type": "main",
+            "index": 2
+          }
+        ]
+      ]
+    },
+    "AI Agent1": {
+      "main": [
+        [
+          {
+            "node": "Lead Data + Response to Lead",
+            "type": "main",
+            "index": 1
+          }
+        ]
+      ]
+    },
+    "Lead Input Data": {
+      "main": [
+        [
+          {
+            "node": "Lead Basic Data",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Data + Response to Lead": {
+      "main": [
+        [
+          {
+            "node": "Save Follow-Up in Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Lead Basic Data": {
+      "main": [
+        [
+          {
+            "node": "AI Lead Extractor",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Lead Extractor": {
+      "main": [
+        [
+          {
+            "node": "Calculate Lead Score",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Validate Lead Data": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Lead Extractor",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Calculate Lead Score": {
+      "main": [
+        [
+          {
+            "node": "Classify Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Classify Lead": {
+      "main": [
+        [
+          {
+            "node": "HOT - Action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "WARM - Action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "COLD - Action",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Unqualified - Action",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Merge Qualified Lead": {
+      "main": [
+        [
+          {
+            "node": "Save Lead to Sheets",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Lead to Sheets": {
+      "main": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "main",
+            "index": 0
+          },
+          {
+            "node": "Lead Data + Response to Lead",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Generate follow up message": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent1",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Save Follow-Up in Sheets": {
+      "main": [
+        []
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate"
+  },
+  "versionId": "83535e0e-35ba-4bb1-9f87-f77c546044f2",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "875a95f25a4acf10f028c3078dcc4362658235c176a6760f127238538b874f96"
+  },
+  "nodeGroups": [],
+  "id": "GfMXsaujRI5gKys0",
+  "tags": []
+}
