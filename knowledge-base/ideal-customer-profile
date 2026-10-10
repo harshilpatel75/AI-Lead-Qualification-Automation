@@ -1,0 +1,195 @@
+WEBGROWTH SOLUTIONS — IDEAL CUSTOMER PROFILE
+
+PURPOSE
+
+This document defines the types of customers that are generally a good fit for WebGrowth Solutions.
+
+The AI qualification system should use this information when evaluating business fit.
+
+
+PRIMARY IDEAL CUSTOMERS
+
+WebGrowth Solutions primarily targets small and medium-sized businesses that need websites, e-commerce solutions, web applications, maintenance or basic SEO.
+
+Ideal customers generally have:
+- A clear business purpose
+- A genuine need for an online presence or digital improvement
+- A realistic project budget
+- A reasonable project timeline
+- Requirements that can be handled by a small web development team
+- A willingness to communicate requirements clearly
+
+
+HIGH-FIT BUSINESS TYPES
+
+The following business categories are generally strong fits:
+
+- Restaurants
+- Cafes
+- Gyms and fitness centers
+- Clinics
+- Salons
+- Local retailers
+- Clothing businesses
+- Educational institutes
+- Coaching businesses
+- Professional service providers
+- Real estate businesses
+- Small manufacturers
+- Local service businesses
+- Startups
+- Small online brands
+
+
+MEDIUM-FIT CUSTOMERS
+
+The following may be suitable depending on requirements:
+
+- Larger businesses requiring customized web applications
+- Businesses requiring multiple integrations
+- Businesses with complex workflows
+- Businesses with larger websites
+- Businesses transitioning from an existing website
+- Businesses requiring advanced dashboards
+
+These leads require additional requirement analysis before determining final qualification.
+
+
+LOW-FIT CUSTOMERS
+
+The following are generally lower-fit opportunities:
+
+- Leads with unrealistic budgets
+- Leads with unclear requirements and no willingness to clarify them
+- Projects requiring highly specialized enterprise infrastructure
+- Extremely complex software systems outside the team's current scope
+- Projects requiring guaranteed business results
+- Projects requiring guaranteed Google rankings
+- Projects requiring features that are technically infeasible within the requested timeline
+
+
+VERY LOW-FIT OR UNQUALIFIED REQUESTS
+
+A lead may be considered unqualified when:
+
+- The requested work is unrelated to web development or digital services
+- The lead refuses to provide basic project information
+- The requested budget is completely unrealistic for the requested scope
+- The requested timeline is technically impossible
+- The lead requests illegal or unethical functionality
+- The lead expects substantial work without appropriate compensation
+- The lead requires guarantees that cannot responsibly be provided
+
+
+BUSINESS SIZE
+
+WebGrowth Solutions is primarily focused on:
+
+- Individuals starting a business
+- Small businesses
+- Medium-sized businesses
+- Early-stage startups
+
+Large enterprise opportunities can still be considered when the requirements are technically suitable and the project can be handled effectively.
+
+
+GEOGRAPHICAL FIT
+
+The business can work with customers remotely.
+
+Local customers can be especially convenient for communication and meetings, but location alone should not determine lead qualification.
+
+
+COMMUNICATION FIT
+
+Strong leads generally:
+
+- Explain what they want
+- Respond to questions
+- Provide useful project information
+- Have a clear decision-making process
+- Are willing to discuss scope and budget
+
+Leads that provide very little information should not automatically be marked as bad leads.
+
+Instead, the system should identify the missing information and recommend follow-up questions.
+
+
+IMPORTANT QUALIFICATION PRINCIPLE
+
+Business fit should not be determined using a single characteristic.
+
+The AI should consider:
+
+- Business type
+- Project requirement
+- Budget
+- Timeline
+- Technical complexity
+- Business purpose
+- Intent
+- Available information
+
+The final qualification should be based on the combination of these factors.
+
+
+EXAMPLE HIGH-FIT LEAD
+
+A local gym wants a professional website with:
+- Service information
+- Membership information
+- Contact form
+- WhatsApp integration
+- Mobile responsive design
+
+Budget: ₹25,000
+
+Timeline: 2–3 weeks
+
+This is generally a strong-fit opportunity because the business type, requirement, budget and timeline align with the company's services.
+
+
+EXAMPLE MEDIUM-FIT LEAD
+
+A growing retail business wants:
+- E-commerce website
+- Payment gateway
+- Product catalogue
+- Customer accounts
+- Admin dashboard
+
+Budget: ₹45,000
+
+Timeline: 4 weeks
+
+This may be a suitable opportunity, but the final assessment depends on the number of products, required functionality and technical complexity.
+
+
+EXAMPLE LOW-FIT LEAD
+
+A business requests a highly complex enterprise platform with:
+- Multiple advanced integrations
+- Large-scale infrastructure
+- Complex security requirements
+- Extensive custom business logic
+
+Budget: ₹30,000
+
+Timeline: 2 weeks
+
+This is generally a poor fit because the requested scope, budget and timeline are not aligned.
+
+
+AI DECISION GUIDANCE
+
+The AI must not reject a lead solely because it belongs to a category not explicitly listed above.
+
+The AI should evaluate the actual requirement and identify:
+- Relevant services
+- Budget compatibility
+- Timeline compatibility
+- Business fit
+- Technical complexity
+- Missing information
+
+When uncertain, the AI should recommend human review instead of making an unsupported decision.
