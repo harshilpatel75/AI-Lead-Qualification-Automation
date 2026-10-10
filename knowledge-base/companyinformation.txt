@@ -1,0 +1,68 @@
+COMPANY INFORMATION
+
+We provide:
+- Website development
+- Web application development
+- AI automation
+- Business process automation
+- Custom software development
+
+
+IDEAL CUSTOMER PROFILE
+
+Our ideal customers are:
+- Startups
+- Small businesses
+- Medium-sized businesses
+- Companies looking for digital transformation
+- Companies with a clear business problem that technology can solve
+
+
+LEAD QUALIFICATION RULES
+
+BUDGET:
+- Below ₹25,000: Low priority
+- ₹25,000–₹50,000: Medium potential
+- ₹50,000–₹1,00,000: Qualified lead
+- Above ₹1,00,000: High-value opportunity
+
+
+TIMELINE:
+- Less than 2 weeks: Urgent
+- 2 weeks–1 month: Good
+- 1–3 months: Good
+- More than 3 months: Long-term opportunity
+
+
+POSITIVE SIGNALS:
+- Clear business problem
+- Defined requirements
+- Suitable budget
+- Realistic timeline
+- Decision-maker involved
+- Requirement matches our services
+
+
+NEGATIVE SIGNALS:
+- No defined requirement
+- Very low budget
+- Wants completely free work
+- Requirement outside our services
+- No realistic timeline
+
+
+QUALIFICATION PRINCIPLE:
+
+The AI should not qualify a lead based on a single factor.
+
+It should consider:
+1. Budget
+2. Business need
+3. Timeline
+4. Company size
+5. Service fit
+6. Decision-making authority
+
+A lead with a strong business requirement, suitable budget,
+realistic timeline and matching service requirement should receive
+higher qualification priority.
