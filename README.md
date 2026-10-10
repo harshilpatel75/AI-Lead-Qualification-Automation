@@ -1,17 +1,17 @@
 # AI-Powered Lead Qualification & Follow-Up Automation
 
-An AI-powered lead qualification and follow-up automation project built with **n8n, Retrieval-Augmented Generation (RAG), Google Gemini, Ollama, Supabase, and Google Sheets**.
+An AI-powered lead qualification and follow-up automation project built with **n8n, Retrieval-Augmented Generation (RAG), Google Gemini, Ollama, and Google Sheets**.
 
 The system retrieves company-specific knowledge, extracts structured lead information, evaluates lead quality using configurable business rules, assigns a qualification category, and generates personalized follow-up messages.
 
 The project contains two complementary workflows:
 
-1. **Knowledge Base Ingestion Workflow** — reads company knowledge files, generates embeddings, and stores them in a vector database.
+1. **Knowledge Base Ingestion Workflow** — reads company knowledge files, generates embeddings, and stores them in n8n's Simple Vector Store.
 2. **Lead Qualification Workflow** — retrieves the stored knowledge to evaluate incoming leads, calculates scores, classifies leads, and generates follow-up message drafts.
 
 ## Features
 
-- **RAG-based knowledge retrieval:** Retrieves relevant company information from a vector database.
+- **RAG-based knowledge retrieval:** Retrieves relevant company information from a vector store.
 - **Knowledge base ingestion:** Loads company knowledge files, extracts and chunks text, generates embeddings, and stores vectors for retrieval.
 - **AI-powered lead extraction:** Extracts structured lead details from unstructured input.
 - **Automated lead scoring:** Evaluates leads based on budget, requirement clarity, timeline, business fit, service fit, and decision-maker involvement.
@@ -29,7 +29,7 @@ The project contains two complementary workflows:
 - **Google Gemini** — AI-powered lead extraction and follow-up message generation
 - **Ollama** — Local embedding generation
 - **nomic-embed-text** — Embedding model
-- **Supabase with pgvector** — Vector storage and similarity search
+- **n8n Simple Vector Store** — Vector storage and similarity search
 - **Google Sheets** — Lead records and follow-up message storage
 - **JavaScript** — Lead scoring and classification logic
 - **Docker Desktop** — Runs n8n locally in a container
@@ -50,11 +50,11 @@ Processing steps:
 2. Extracts text from source documents or file data.
 3. Splits the content into manageable text chunks.
 4. Generates embeddings using Ollama and `nomic-embed-text`.
-5. Stores the embedded documents in the configured Supabase pgvector database.
+5. Stores the embedded documents in n8n's Simple Vector Store.
 
 Run this workflow before using the lead qualification workflow for the first time and whenever you update the knowledge base.
 
-**Important:** Repeated ingestion may create duplicate chunks unless the workflow uses an appropriate cleanup, replacement, or upsert strategy. Verify your vector-store configuration before re-ingesting documents.
+**Important:** Repeated ingestion may create duplicate chunks depending on the node configuration. Check whether the workflow clears or replaces existing data before re-ingesting documents.
 
 ### Workflow 2: Lead Qualification and Follow-Up
 
@@ -81,13 +81,15 @@ The generated follow-up message is a draft. The workflow does not automatically 
 
 1. Configure the required services and credentials.
 2. Start Ollama and verify that n8n can connect to it.
-3. Configure Supabase and the vector-store settings.
+3. Configure the Simple Vector Store and retrieval nodes.
 4. Run the Knowledge Base Ingestion Workflow.
 5. Verify that the knowledge has been stored successfully.
 6. Execute the Lead Qualification Workflow with a sample lead.
 7. Review the qualification result and follow-up message in Google Sheets.
 
-The lead qualification workflow depends on the vector database containing the required company knowledge.
+The lead qualification workflow depends on the Simple Vector Store containing the required company knowledge.
+
+**Storage note:** Simple Vector Store is intended primarily for development and experimentation. Depending on the node configuration and n8n version, stored data may not survive a restart or container recreation. Verify its persistence behavior in your environment and re-run ingestion if the stored vectors have been lost.
 
 ## Lead Scoring
 
@@ -174,9 +176,10 @@ Before running this project, you need:
 - Ollama installed on Windows
 - The `nomic-embed-text` embedding model
 - A Google Gemini API key, if required by the imported workflow
-- A Supabase project with pgvector enabled
 - A Google account with Google Sheets access
 - The project knowledge-base files
+
+**Supabase and pgvector are not required** for the current implementation because it uses n8n Simple Vector Store.
 
 Other operating systems and hosted deployments may require different network and file-path settings.
 
@@ -225,17 +228,17 @@ C:\N8N\AI-Lead-Qualification\knowledge-base:/files/knowledge-base
 
 Use your actual Windows directory. Ensure Docker Desktop can access it and that the container path matches the paths used by your workflow nodes.
 
-**Important:** Windows host paths such as `C:\N8N\...` generally cannot be used directly by file-reading nodes inside the Linux-based n8n container. Use the corresponding container path, such as `/files/knowledge-base`.
+**Important:** Windows host paths generally cannot be used directly by file-reading nodes inside the Linux-based n8n container. Use the corresponding container path, such as `/files/knowledge-base`.
 
 ### 4. Configure n8n File-Access Permissions
 
-If a workflow reads files using n8n file nodes, mounting the directory alone may not be sufficient. n8n also applies file-access restrictions.
+Mounting the directory alone may not be sufficient. n8n also applies file-access restrictions.
 
 An incorrectly configured environment can cause errors such as:
 
 `Access to the file is not allowed`
 
-For this project, configure the environment variable to allow access to the mounted knowledge-base directory.
+Configure the environment variable to allow access to the mounted knowledge-base directory, provided this matches the configuration supported by your n8n version:
 
 ```text
 N8N_RESTRICT_FILE_ACCESS_TO=/files/knowledge-base
@@ -251,7 +254,7 @@ In Docker Desktop:
 
 If using Docker Compose, configure the variable in the n8n service's `environment` section and the directory in its `volumes` section.
 
-Example configuration:
+Example configuration fragment:
 
 ```yaml
 services:
@@ -262,9 +265,9 @@ services:
       - C:/N8N/AI-Lead-Qualification/knowledge-base:/files/knowledge-base
 ```
 
-This is an illustrative configuration fragment, not a complete Docker Compose file. Add it to your existing n8n service configuration rather than replacing your entire configuration blindly.
+This is an illustrative fragment, not a complete Docker Compose file. Add it to your existing n8n service configuration rather than replacing your entire configuration.
 
-**Verify the environment variable against your working installation and your n8n version.** If you previously resolved this error using a different environment variable, use the exact variable that worked in your setup. Check the official [n8n environment variables documentation](https://docs.n8n.io/hosting/configuration/environment-variables/) for version-specific behavior.
+**Verify the exact environment variable against your working installation and your n8n version.** If you resolved your original file-access error using a different variable, document that exact setting instead. Refer to the official [n8n environment variables documentation](https://docs.n8n.io/hosting/configuration/environment-variables/) for version-specific behavior.
 
 Avoid granting n8n access to the entire host filesystem when only the knowledge-base directory is required.
 
@@ -296,7 +299,7 @@ http://host.docker.internal:11434
 
 **Why use `host.docker.internal`?**
 
-The hostname allows a container to connect to a service running on the host machine. In this setup, n8n runs inside Docker, while Ollama runs on Windows.
+This hostname allows a container to connect to a service running on the host machine. Here, n8n runs inside Docker, while Ollama runs on Windows.
 
 In n8n:
 
@@ -306,7 +309,7 @@ In n8n:
 4. Select the `nomic-embed-text` model in the embedding node.
 5. Execute the node to test the connection.
 
-The Ollama API commonly runs locally without API-key authentication by default. Do not expose the Ollama service directly to untrusted networks. Configure networking and firewall rules appropriately.
+Ollama commonly runs locally without API-key authentication by default. Do not expose the Ollama service directly to untrusted networks. Configure networking and firewall rules appropriately.
 
 **Important:** `host.docker.internal` is intended for containers connecting to services on the host machine. Linux or hosted deployments may require a different hostname or network configuration.
 
@@ -318,23 +321,7 @@ If the credential reference in the exported JSON does not resolve in your n8n in
 
 Never upload your actual API key to GitHub.
 
-### 7. Configure Supabase and pgvector
-
-Create a Supabase project and enable the pgvector extension.
-
-Configure the vector-store nodes in both workflows to use the appropriate Supabase database connection and vector table.
-
-Ensure that:
-
-- The required vector table exists or can be created by your configured workflow.
-- The table schema matches the vector-store node configuration.
-- The embedding dimensions match the output of the selected embedding model.
-- The ingestion workflow and retrieval workflow use the same vector table or collection.
-- Database credentials are configured securely in n8n.
-
-Follow the actual node configuration and current Supabase setup instructions when creating the table and database connection.
-
-### 8. Configure Google Sheets
+### 7. Configure Google Sheets
 
 Create or select a Google spreadsheet for storing lead records and follow-up drafts.
 
@@ -342,30 +329,32 @@ Configure your own Google Sheets credentials in n8n and select the appropriate s
 
 Make sure the spreadsheet columns match the data fields expected by the workflow.
 
-### 9. Import the Workflows
+### 8. Import the Workflows
 
 Import both JSON files into n8n:
 
 1. `workflow/knowledge-base-ingestion-workflow.json`
 2. `workflow/lead-qualification-workflow.json`
 
-After importing, inspect the nodes and configure any missing credentials, model names, database settings, spreadsheet IDs, and file paths.
+After importing, inspect the nodes and configure any missing credentials, model names, spreadsheet IDs, file paths, and Simple Vector Store settings.
 
 Exported workflow JSON files contain workflow configuration and credential references, but they do not automatically transfer the original owner's credentials or guarantee that every external service is configured for your environment.
 
-### 10. Run the Knowledge Base Ingestion Workflow
+### 9. Run the Knowledge Base Ingestion Workflow
 
 Before processing leads:
 
-1. Verify that Ollama and Supabase are accessible.
+1. Verify that Ollama is accessible from n8n.
 2. Confirm that all required knowledge-base files can be read.
 3. Execute the ingestion workflow.
 4. Check for successful embedding generation and vector storage.
-5. Verify that the retrieval workflow points to the same vector-store configuration.
+5. Verify that the lead qualification workflow uses the corresponding Simple Vector Store configuration.
 
 Do not assume ingestion is complete until you have checked the execution results.
 
-### 11. Run the Lead Qualification Workflow
+If your Simple Vector Store data has been lost after restarting n8n, run ingestion again before testing lead qualification.
+
+### 10. Run the Lead Qualification Workflow
 
 Provide a sample lead or use the supplied CSV as a reference for test cases.
 
@@ -398,16 +387,17 @@ Confirm that the results match the scoring rules configured in your workflow.
 ### "Access to the File Is Not Allowed"
 
 - Confirm that the knowledge-base directory is mounted into the n8n container.
-- Verify that `N8N_RESTRICT_FILE_ACCESS_TO` is configured with the appropriate allowed directory for your n8n version.
+- Verify the file-access environment variable supported by your n8n version.
 - Recreate the container after changing environment variables.
 - Make sure the file node uses a container path within the allowed directory.
 
 ### Vector Retrieval Returns No Relevant Results
 
 - Confirm that ingestion completed successfully.
-- Check that ingestion and retrieval use the same vector table.
-- Verify the embedding model and vector dimensions.
-- Check the vector-store configuration and retrieval query.
+- Check that the ingestion and retrieval workflows use the appropriate Simple Vector Store configuration.
+- Verify the embedding model and that both workflows use compatible embeddings.
+- Check the retrieval query and vector-store settings.
+- Re-run ingestion if the stored vectors have been lost.
 
 ### Imported Workflow Nodes Show Missing Credentials
 
@@ -415,7 +405,7 @@ Confirm that the results match the scoring rules configured in your workflow.
 - Select those credentials in the relevant nodes.
 - Verify external service permissions and connection settings.
 
-Exact node settings, table schemas, credential types, environment variables, and file paths may vary by n8n version and deployment environment.
+Exact node settings, credential types, environment variables, and file paths may vary by n8n version and deployment environment.
 
 ## Workflow Overview
 
@@ -428,7 +418,7 @@ Exact node settings, table schemas, credential types, environment variables, and
 - Review workflow exports for sensitive values before publishing them.
 - Do not publish private lead information or confidential business documents.
 - Use synthetic lead data for public demonstrations.
-- Restrict access to your n8n instance, database, and Google Sheets as appropriate.
+- Restrict access to your n8n instance and Google Sheets as appropriate.
 - Avoid exposing local services such as Ollama to untrusted networks.
 - Treat publicly accessible workflow exports as configuration files that may reveal internal node names, paths, and implementation details.
 
@@ -436,6 +426,7 @@ Exact node settings, table schemas, credential types, environment variables, and
 
 - Classification depends on the quality of extracted information and configured scoring rules.
 - RAG quality depends on the content, chunking, embeddings, and retrieval configuration of the knowledge base.
+- Simple Vector Store is intended primarily for development and experimentation. Verify its persistence behavior before relying on stored vectors across restarts or container recreation.
 - Follow-up messages are generated drafts; generation does not itself send messages to leads.
 - Actual outreach requires valid contact information and a separately configured communication integration.
 - Human review is recommended before acting on important qualification decisions.
@@ -450,6 +441,7 @@ Exact node settings, table schemas, credential types, environment variables, and
 - More comprehensive monitoring and error notifications
 - Human review and feedback to improve qualification accuracy
 - Automated knowledge-base refresh and duplicate-safe ingestion
+- A persistent vector database for deployments requiring reliable storage across restarts
 
 ## Author
 
