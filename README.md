@@ -81,6 +81,10 @@ The workflow has been tested with:
 
 Exact node configuration and credentials may vary by environment.
 
+## Workflow Overview
+
+![AI Lead Qualification n8n Workflow](Project-Screenshots/workflow-overview.png)
+
 ## Security
 
 - Never commit API keys, credentials, access tokens, or private lead information.
